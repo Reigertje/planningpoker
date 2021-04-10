@@ -16,7 +16,7 @@ const CREATE = 'CREATE';
 
 const JoinOrCreate = () => {
   const history = useHistory();
-  const [roomId, setRoomId] = useState(null);
+  const [roomId, setRoomId] = useState('');
   const [selectedTab, setSelectedTab] = useState(JOIN);
   const { client } = useContext(AppContext);
 

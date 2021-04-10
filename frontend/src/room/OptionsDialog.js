@@ -31,7 +31,7 @@ const OptionsDialog = ({ open, handleClose, onChangeOptions, initialValue }) => 
     <form onSubmit={handleSubmit}>
     <DialogTitle>Change cards</DialogTitle>
     <DialogContent>
-      { OPTION_DECKS.map(({ name, options }) => <Card style={{ marginBottom: '8px'}} variant="outlined">
+      { OPTION_DECKS.map(({ name, options }) => <Card key={options} style={{ marginBottom: '8px'}} variant="outlined">
           <CardActionArea onClick={() => submitOptions(options)}>
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">

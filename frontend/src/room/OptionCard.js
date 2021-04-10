@@ -15,7 +15,7 @@ const OptionCard = ({ value, selected, onVote }) => {
         <div className='option-vote'>
           <FrontSvg />
           <div className='option-vote-value'>
-            <Typography variant="button" color="#e13e8a">{value}</Typography>
+            <Typography variant="button">{value}</Typography>
           </div>
         </div>
       </CardActionArea>

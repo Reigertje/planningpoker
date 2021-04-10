@@ -50,8 +50,12 @@ class Participant {
   }
 
   onJoinRoom(roomId, callback) {
+    console.log('joins room');
     if (this.room != null) {
-      if (this.room.id === roomId) return;
+      if (this.room.id === roomId) {
+        this.room.notifyParticipants();
+        return;
+      }
       this.onDisconnect();
     }
     try {

@@ -134,10 +134,10 @@ const Room = () => {
         )}
       </div>
       <div className='actions-row'>
-        <IconButton color="primary" size="large" onClick={reset}>
+        <IconButton color="primary" onClick={reset}>
           <ReplayIcon />
         </IconButton>
-        <IconButton color="secondary" size="large" disabled={roomState.state !== 'SCORING'} onClick={reveal}>
+        <IconButton color="secondary"disabled={roomState.state !== 'SCORING'} onClick={reveal}>
           <VisibilityIcon />
         </IconButton>
       </div>
@@ -145,7 +145,7 @@ const Room = () => {
         { roomState.state === 'SCORING' ? 'Select a card and wait for others...' : '-' }
       </div>
       <div className='options-row'>
-        { roomState.options.split(',').map(value => <OptionCard value={value} onVote={vote} selected={voteForParticipant(roomState.you)?.value === value}/>) }
+        { roomState.options.split(',').map(value => <OptionCard key={value} value={value} onVote={vote} selected={voteForParticipant(roomState.you)?.value === value}/>) }
       </div>
     </div>
     }
