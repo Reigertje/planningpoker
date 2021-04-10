@@ -1,7 +1,11 @@
 
-.planning-poker-title {
+.planning-poker-home {
   text-align: center;
-  margin-bottom: 32px;
+  margin: 32px;
+}
+
+.planning-poker-logo {
+  height: 100px;
 }
 
 .participants-row {
@@ -68,12 +72,14 @@
 .actions-row {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 32px;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
-.room-actions {
-  margin-left: auto;
+.header-row {
+  display: flex;
+  margin: 16px;
+  justify-content: flex-end
 }
 
 .MuiTypography-button {
@@ -81,6 +87,7 @@
 }
 
 .room-action-button {
+  text-transform: none!important;
   margin-left: 16px!important;
 }
 

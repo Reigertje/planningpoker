@@ -11,9 +11,8 @@ import './App.css';
 
 const AppContext = React.createContext();
 
-export default function App() {
+const App = () => {
   const [client, setClient] = useState(null);
-  const [roomState, setRoomState] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -21,12 +20,7 @@ export default function App() {
     client.on('connected', () => {
       setClient(client);
     });
-
-    client.on('roomState', data => {
-      console.log(data);
-      setRoomState(data);
-    })
-  }, [])
+  }, []);
 
   const dispatchError = message => {
     enqueueSnackbar(message, {
@@ -39,21 +33,25 @@ export default function App() {
     });
   }
 
+  return <AppContext.Provider value={{ client, dispatchError }}>
+      {client &&
+        <Container maxWidth="lg" className="app-container">
+          <Switch>
+            <Route path="/:roomId">
+              <Room />
+            </Route>
+            <Route path="/" >
+              <Home />
+            </Route>
+          </Switch>
+        </Container>
+      }
+    </AppContext.Provider>
+}
+
+export default function AppWrapper() {
   return <Router>
-      <AppContext.Provider value={{ client, roomState, dispatchError }}>
-        {client &&
-          <Container maxWidth="lg" className="app-container">
-            <Switch>
-              <Route path="/:roomId">
-                <Room />
-              </Route>
-              <Route path="/" >
-                <Home />
-              </Route>
-            </Switch>
-          </Container>
-        }
-      </AppContext.Provider>
+    <App />;
   </Router>
 }
 

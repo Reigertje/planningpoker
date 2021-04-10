@@ -35,10 +35,13 @@ class Participant {
     socket.on('reveal', this.onReveal.bind(this));
     socket.on('reset', this.onReset.bind(this));
     socket.on('options', this.onChangeOptions.bind(this));
+    socket.on('leave', this.onDisconnect.bind(this));
   }
 
   onCreateRoom(options, callback) {
-    if (this.room !== null) return;
+    if (this.room != null) {
+      this.onDisconnect();
+    }
 
     this.room = new Room(generateId(4), options);
     ROOMS[this.room.id] = this.room;
@@ -47,7 +50,10 @@ class Participant {
   }
 
   onJoinRoom(roomId, callback) {
-    if (this.room !== null) return;
+    if (this.room != null) {
+      if (this.room.id === roomId) return;
+      this.onDisconnect();
+    }
     try {
       this.room = getRoom(roomId);
       this.room.join(this);
@@ -62,9 +68,11 @@ class Participant {
     console.log(`${this.socket.id} left room`);
     if (this.room) {
       this.room.leave(this);
+
       if (this.room.participants.length === 0) {
         ROOMS[this.room.id] = null;
       }
+      this.room = null;
     }
   }
 
