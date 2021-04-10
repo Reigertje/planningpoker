@@ -1,0 +1,101 @@
+
+.planning-poker-title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.participants-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.participant {
+  margin: 0.5em;
+  text-align: center;
+}
+
+.participant-vote {
+  margin: 0.5em;
+  width: 150px;
+  position: relative;
+}
+
+.participant-vote-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff
+}
+
+.options-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.option {
+  margin: 0.5em;
+}
+
+.option-vote {
+  width: 75px;
+  margin: 0.5em;
+  position: relative;
+}
+
+.option-vote-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff
+}
+
+.option.selected .MuiPaper-root {
+  background-color: #e13e8a;
+  transition: background-color 0.5s;
+}
+
+.info-row {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 32px;
+}
+
+.room-actions {
+  margin-left: auto;
+}
+
+.MuiTypography-button {
+  text-transform: none!important;
+}
+
+.room-action-button {
+  margin-left: 16px!important;
+}
+
+.room-action-button svg {
+  font-size: 20px;
+}
+
+.room-action-button .room-action-edit {
+  display: none;
+}
+
+.room-action-button:hover .room-action-edit {
+  display: initial;
+}
+
+.room-action-button:hover .room-action-icon {
+  display: none;
+}

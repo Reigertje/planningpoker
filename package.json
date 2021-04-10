@@ -1,0 +1,36 @@
+{
+  "name": "planningpoker",
+  "version": "1.0.0",
+  "description": "poker to plan",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles",
+    "start": "node main.js",
+    "build-frontend": "yarn --cwd frontend install && yarn --cwd frontend build",
+    "deploy-frontend": "cp -a frontend/build/. public/",
+    "heroku-postbuild": "yarn build-frontend && yarn deploy-frontend"
+  },
+  "engines": {
+    "yarn": "1.15.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reigertje/planningpoker.git"
+  },
+  "keywords": [
+    "reireirei",
+    "rei",
+    "reirei"
+  ],
+  "author": "brian reigersberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Reigertje/planningpoker/issues"
+  },
+  "homepage": "https://github.com/Reigertje/planningpoker#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jest": "^26.6.0",
+    "socket.io": "^4.0.0"
+  }
+}
