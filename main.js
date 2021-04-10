@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-app.use(express.static('public'));
+app.use('/*', express.static('public'));
 
 // console.log that your server is up and running
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
