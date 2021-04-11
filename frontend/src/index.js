@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { SnackbarProvider } from 'notistack';
-import Grow from '@material-ui/core/Grow';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { SnackbarProvider } from "notistack";
+import Grow from "@material-ui/core/Grow";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -11,5 +11,5 @@ ReactDOM.render(
       <App />
     </SnackbarProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

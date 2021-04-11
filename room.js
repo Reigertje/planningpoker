@@ -3,7 +3,7 @@ class Room {
     this.id = roomId;
     this.participants = [];
     this.votes = [];
-    this.state = 'SCORING';
+    this.state = "SCORING";
     this.options = options;
   }
 
@@ -14,42 +14,46 @@ class Room {
   }
 
   leave(leavingParticipant) {
-    this.participants = this.participants.filter(participant => participant.id !== leavingParticipant.id);
+    this.participants = this.participants.filter(
+      participant => participant.id !== leavingParticipant.id
+    );
 
     if (this.votes.length === this.participants.length) {
-      this.state === 'REVEALED';
+      this.state === "REVEALED";
     }
     this.notifyParticipants();
   }
 
   vote(value, participant) {
-    if (this.state !== 'SCORING') return;
+    if (this.state !== "SCORING") return;
 
-    const existingVote = this.votes.find(vote => vote.participantId === participant.id);
+    const existingVote = this.votes.find(
+      vote => vote.participantId === participant.id
+    );
 
     console.log(existingVote);
 
     if (existingVote) {
       existingVote.value = value;
     } else {
-      this.votes.push({ value, participantId: participant.id});
+      this.votes.push({ value, participantId: participant.id });
     }
 
     if (this.votes.length === this.participants.length) {
-      this.state = 'REVEALED';
+      this.state = "REVEALED";
     }
 
     this.notifyParticipants();
   }
 
   reset() {
-    this.state = 'SCORING';
+    this.state = "SCORING";
     this.votes = [];
     this.notifyParticipants();
   }
 
   reveal() {
-    this.state = 'REVEALED';
+    this.state = "REVEALED";
     this.notifyParticipants();
   }
 
@@ -60,16 +64,18 @@ class Room {
 
   notifyParticipants() {
     this.participants.forEach(participant => {
-      participant.socket.emit('roomState', this.getObservableState(participant));
+      participant.socket.emit(
+        "roomState",
+        this.getObservableState(participant)
+      );
     });
   }
 
   getObservableState(observingParticipant) {
-
     const observableParticipants = this.participants.map(participant => ({
       id: participant.id,
       displayName: participant.displayName,
-      isYou: observingParticipant.id === participant.id,
+      isYou: observingParticipant.id === participant.id
     }));
 
     return {
@@ -78,10 +84,14 @@ class Room {
       participants: observableParticipants,
       votes: this.votes.map(vote => ({
         participantId: vote.participantId,
-        value: this.state === 'SCORING' && vote.participantId !== observingParticipant.id ? null : vote.value,
+        value:
+          this.state === "SCORING" &&
+          vote.participantId !== observingParticipant.id
+            ? null
+            : vote.value
       })),
-      options: this.options,
-    }
+      options: this.options
+    };
   }
 }
 

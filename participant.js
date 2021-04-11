@@ -1,23 +1,23 @@
-const Room = require('./room');
+const Room = require("./room");
 
-// Yuck! Maybe use redis?
+// Questionable global var
 var ROOMS = {};
 
 const getRoom = roomId => {
   const room = ROOMS[roomId];
-  if (!room) throw new Error('Room not found!');
+  if (!room) throw new Error("Room not found!");
   return room;
-}
+};
 
 const generateId = length => {
-   var result           = '';
-   var characters       = '0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
-}
+  var result = "";
+  var characters = "0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
 
 class Participant {
   constructor(io, socket) {
@@ -27,15 +27,15 @@ class Participant {
     this.id = this.socket.id;
     this.room = null;
 
-    socket.on('create', this.onCreateRoom.bind(this));
-    socket.on('join', this.onJoinRoom.bind(this));
-    socket.on('disconnect', this.onDisconnect.bind(this));
-    socket.on('name', this.onChangeName.bind(this));
-    socket.on('vote', this.onVote.bind(this));
-    socket.on('reveal', this.onReveal.bind(this));
-    socket.on('reset', this.onReset.bind(this));
-    socket.on('options', this.onChangeOptions.bind(this));
-    socket.on('leave', this.onDisconnect.bind(this));
+    socket.on("create", this.onCreateRoom.bind(this));
+    socket.on("join", this.onJoinRoom.bind(this));
+    socket.on("disconnect", this.onDisconnect.bind(this));
+    socket.on("name", this.onChangeName.bind(this));
+    socket.on("vote", this.onVote.bind(this));
+    socket.on("reveal", this.onReveal.bind(this));
+    socket.on("reset", this.onReset.bind(this));
+    socket.on("options", this.onChangeOptions.bind(this));
+    socket.on("leave", this.onDisconnect.bind(this));
   }
 
   onCreateRoom(options, callback) {
@@ -50,7 +50,7 @@ class Participant {
   }
 
   onJoinRoom(roomId, callback) {
-    console.log('joins room');
+    console.log("joins room");
     if (this.room != null) {
       if (this.room.id === roomId) {
         this.room.notifyParticipants();
@@ -106,7 +106,5 @@ class Participant {
     this.room.reset();
   }
 }
-
-
 
 module.exports = Participant;
