@@ -20,7 +20,7 @@ const OptionsDialog = ({
   onChangeOptions,
   initialValue
 }) => {
-  const [customOptions, setCustomOptions] = useState(initialValue || "1,2,3");
+  const [customOptions, setCustomOptions] = useState(initialValue || "");
 
   const submitOptions = options => {
     onChangeOptions(options.split(/\s*,\s*/).join(","));
@@ -50,11 +50,11 @@ const OptionsDialog = ({
             >
               <CardActionArea onClick={() => submitOptions(options)}>
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
+                  <Typography gutterBottom variant="h6" component="h2">
                     {name}
                   </Typography>
                   <Typography
-                    variant="body2"
+                    variant="caption"
                     color="textSecondary"
                     component="p"
                   >
@@ -67,20 +67,22 @@ const OptionsDialog = ({
 
           <Card variant="outlined">
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography gutterBottom variant="h6" component="h2">
                 Custom
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
+              <Typography variant="caption" color="textSecondary" component="p">
                 Provide a custom deck as comma separated values:
               </Typography>
               <TextField
+                variant="outlined"
+                placeholder="e.g. 1,2,3,4"
                 margin="dense"
                 type="input"
                 value={customOptions}
                 onChange={e => setCustomOptions(e.target.value)}
                 fullWidth
               />
-              <CardActions disableSpacing>
+              <CardActions className="options-dialog-actions" disableSpacing>
                 <Button type="submit" color="primary">
                   Submit
                 </Button>
