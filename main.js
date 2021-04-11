@@ -11,12 +11,6 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-app.use(express.static('public'));
-
-app.get('*', (req,res) =>{
-    res.sendFile(path.join(__dirname+'/public/index.html'));
-});
-
 if(process.env.NODE_ENV === 'production') {
   // Forward to https for Heroku
   app.use((req, res, next) => {
@@ -26,6 +20,12 @@ if(process.env.NODE_ENV === 'production') {
       next()
   })
 }
+
+app.use(express.static('public'));
+
+app.get('*', (req,res) =>{
+    res.sendFile(path.join(__dirname+'/public/index.html'));
+});
 
 // console.log that your server is up and running
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
