@@ -1,2 +1,31 @@
-# chinchon
-Multiplayer Chinchón card game in browser using socket.io
+## Planning Poker
+
+### Requirements
+
+Make sure you have node.js, npm and yarn installed.
+
+### Server
+
+For setup, simply run
+
+```
+npm install
+```
+
+Run server with node
+
+```
+node main.js
+```
+
+### Frontend
+
+```
+yarn install
+```
+
+Start development server
+
+```
+yarn start
+```
