@@ -21,6 +21,12 @@ node main.js
 ### Frontend
 
 ```
+cd frontend
+```
+
+Install packages
+
+```
 yarn install
 ```
 
