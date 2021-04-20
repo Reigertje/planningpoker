@@ -39,6 +39,8 @@ class Participant {
   }
 
   onCreateRoom(options, callback) {
+    console.log(`${this.socket.id} created room`);
+
     if (this.room != null) {
       this.onDisconnect();
     }
@@ -50,7 +52,7 @@ class Participant {
   }
 
   onJoinRoom(roomId, callback) {
-    console.log("joins room");
+    console.log(`${this.socket.id} is joining room`);
     if (this.room != null) {
       if (this.room.id === roomId) {
         this.room.notifyParticipants();
@@ -81,6 +83,7 @@ class Participant {
   }
 
   onChangeName(name) {
+    console.log(`${this.socket.id} changed name`);
     this.displayName = name;
 
     if (this.room) {
@@ -89,21 +92,31 @@ class Participant {
   }
 
   onChangeOptions(options) {
+    console.log(`${this.socket.id} changed options`);
     if (this.room) {
       this.room.changeOptions(options);
     }
   }
 
   onVote(vote) {
-    this.room.vote(vote, this);
+    console.log(`${this.socket.id} voted`);
+    if (this.room) {
+      this.room.vote(vote, this);
+    }
   }
 
   onReveal() {
-    this.room.reveal();
+    console.log(`${this.socket.id} revealed`);
+    if (this.room) {
+      this.room.reveal();
+    }
   }
 
   onReset() {
-    this.room.reset();
+    console.log(`${this.socket.id} reset`);
+    if (this.room) {
+      this.room.reset();
+    }
   }
 }
 
