@@ -4,7 +4,6 @@
   "description": "poker to plan",
   "main": "main.js",
   "scripts": {
-    "test": "jest --detectOpenHandles",
     "start": "node main.js",
     "build-frontend": "yarn --cwd frontend install && yarn --cwd frontend build",
     "deploy-frontend": "cp -a frontend/build/. public/",
@@ -30,7 +29,6 @@
   "homepage": "https://github.com/Reigertje/planningpoker#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "jest": "^26.6.0",
     "socket.io": "^4.0.0"
   }
 }
