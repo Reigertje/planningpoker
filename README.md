@@ -21,6 +21,12 @@ node main.js
 ### Frontend
 
 ```
+cd frontend
+```
+
+Install packages
+
+```
 yarn install
 ```
 
@@ -29,3 +35,6 @@ Start development server
 ```
 yarn start
 ```
+
+
+You can now access the app by visiting localhost:3000 in your browser. 
