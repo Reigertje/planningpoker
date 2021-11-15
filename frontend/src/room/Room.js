@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import ReplayIcon from "@material-ui/icons/Replay";
 import EditIcon from "@material-ui/icons/Edit";
+import Chip from "@material-ui/core/Chip";
 
 import Button from "@material-ui/core/Button";
 import SvgIcon from "@material-ui/core/SvgIcon";
@@ -15,7 +16,7 @@ import { ReactComponent as CatIconSvg } from "assets/cat_icon.svg";
 import { AppContext } from "App";
 
 import Participant from "./Participant";
-import NameDialog from "./NameDialog";
+import ProfileDialog from "./ProfileDialog";
 import OptionsDialog from "./OptionsDialog";
 import OptionCard from "./OptionCard";
 import { OPTION_DECKS } from "options";
@@ -47,17 +48,17 @@ const CatIcon = ({ className }) => (
   <SvgIcon className={className} component={CatIconSvg} />
 );
 
-const useRoom = roomId => {
+const useRoom = (roomId) => {
   const { client, dispatchError } = useContext(AppContext);
   const [roomState, setRoomState] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
-    client.on("roomState", data => {
+    client.on("roomState", (data) => {
       setRoomState(data);
     });
 
-    client.emit("join", roomId, success => {
+    client.emit("join", roomId, (success) => {
       if (!success) {
         history.replace("/");
         dispatchError("Room does not exist");
@@ -79,7 +80,7 @@ const Room = () => {
   const roomState = useRoom(roomId);
   const [cookies, setCookie] = useCookies([NAME_COOKIE_KEY]);
 
-  const [showNameDialog, setShowNameDialog] = useState(
+  const [showProfileDialog, setShowProfileDialog] = useState(
     !cookies[NAME_COOKIE_KEY]
   );
   const [showOptionsDialog, setShowOptionsDialog] = useState(false);
@@ -90,7 +91,7 @@ const Room = () => {
     }
   }, []);
 
-  const vote = value => {
+  const vote = (value) => {
     client.emit("vote", value);
   };
 
@@ -102,40 +103,57 @@ const Room = () => {
     client.emit("reveal");
   };
 
-  const name = value => {
-    setCookie(NAME_COOKIE_KEY, value, { path: "/" });
-    client.emit("name", value);
+  const name = (displayName) => {
+    setCookie(NAME_COOKIE_KEY, displayName, { path: "/" });
+    client.emit("name", displayName);
   };
 
-  const options = value => {
+  const profile = (displayName, isSpectator) => {
+    setCookie(NAME_COOKIE_KEY, displayName, { path: "/" });
+    client.emit("profile", { displayName, isSpectator });
+  };
+
+  const options = (value) => {
     client.emit("options", value);
   };
 
-  const voteForParticipant = participant => {
-    return roomState.votes.find(vote => vote.participantId === participant.id);
+  const voteForParticipant = (participant) => {
+    return roomState.votes.find(
+      (vote) => vote.participantId === participant.id
+    );
   };
 
   return (
     <>
       {roomState && (
         <div>
-          <NameDialog
-            open={showNameDialog}
-            handleClose={() => setShowNameDialog(false)}
-            onChangeName={value => name(value)}
+          <ProfileDialog
+            open={showProfileDialog}
+            handleClose={() => setShowProfileDialog(false)}
+            onChangeProfile={(name, isSpectator) => profile(name, isSpectator)}
+            initialName={roomState?.you?.displayName}
+            initialIsSpectator={roomState?.you?.isSpectator}
           />
           <OptionsDialog
             open={showOptionsDialog}
             handleClose={() => setShowOptionsDialog(false)}
-            onChangeOptions={value => options(value)}
+            onChangeOptions={(value) => options(value)}
           />
           <div className="header-row">
             <div className="room-actions">
               <RoomActionButton
                 IconComponent={CatIcon}
-                onClick={() => setShowNameDialog(true)}
+                onClick={() => setShowProfileDialog(true)}
               >
                 {roomState.you.displayName || "Anonymous"}
+                {roomState.you.isSpectator && (
+                  <Chip
+                    className="spectator-chip"
+                    label="Spectator"
+                    size="small"
+                    color="secondary"
+                  />
+                )}
               </RoomActionButton>
               <RoomActionButton
                 IconComponent={CardsIcon}
@@ -149,14 +167,16 @@ const Room = () => {
           </div>
 
           <div className="participants-row">
-            {roomState.participants.map(participant => (
-              <Participant
-                key={participant.id}
-                participant={participant}
-                vote={voteForParticipant(participant)}
-                hideVoteValue={roomState.state === "SCORING"}
-              />
-            ))}
+            {roomState.participants
+              .filter((participant) => !participant.isSpectator)
+              .map((participant) => (
+                <Participant
+                  key={participant.id}
+                  participant={participant}
+                  vote={voteForParticipant(participant)}
+                  hideVoteValue={roomState.state === "SCORING"}
+                />
+              ))}
           </div>
           <div className="actions-row">
             <IconButton color="primary" onClick={reset}>
@@ -172,19 +192,23 @@ const Room = () => {
           </div>
           <div className="info-row">
             {roomState.state === "SCORING"
-              ? "Select a card and wait for others..."
+              ? roomState.you.isSpectator
+                ? "Spectating. Waiting for people to vote"
+                : "Select a card and wait for others..."
               : "-"}
           </div>
-          <div className="options-row">
-            {roomState.options.split(",").map(value => (
-              <OptionCard
-                key={value}
-                value={value}
-                onVote={vote}
-                selected={voteForParticipant(roomState.you)?.value === value}
-              />
-            ))}
-          </div>
+          {!roomState.you.isSpectator && (
+            <div className="options-row">
+              {roomState.options.split(",").map((value) => (
+                <OptionCard
+                  key={value}
+                  value={value}
+                  onVote={vote}
+                  selected={voteForParticipant(roomState.you)?.value === value}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>
