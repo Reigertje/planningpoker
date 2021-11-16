@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useCookies } from "react-cookie";
-
 import IconButton from "@material-ui/core/IconButton";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import ReplayIcon from "@material-ui/icons/Replay";
 import EditIcon from "@material-ui/icons/Edit";
 import Chip from "@material-ui/core/Chip";
-
 import Button from "@material-ui/core/Button";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { ReactComponent as CardsIconSvg } from "assets/cards.svg";
 import { ReactComponent as CatIconSvg } from "assets/cat_icon.svg";
-
 import { AppContext } from "App";
-
 import Participant from "./Participant";
 import ProfileDialog from "./ProfileDialog";
 import OptionsDialog from "./OptionsDialog";
