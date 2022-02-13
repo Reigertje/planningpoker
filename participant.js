@@ -3,13 +3,13 @@ const Room = require("./room");
 // Questionable global var
 var ROOMS = {};
 
-const getRoom = roomId => {
+const getRoom = (roomId) => {
   const room = ROOMS[roomId];
   if (!room) throw new Error("Room not found!");
   return room;
 };
 
-const generateId = length => {
+const generateId = (length) => {
   var result = "";
   var characters = "0123456789";
   var charactersLength = characters.length;
@@ -24,6 +24,7 @@ class Participant {
     this.socket = socket;
     this.io = io;
     this.displayName = null;
+    this.isSpectator = false;
     this.id = this.socket.id;
     this.room = null;
 
@@ -31,6 +32,7 @@ class Participant {
     socket.on("join", this.onJoinRoom.bind(this));
     socket.on("disconnect", this.onDisconnect.bind(this));
     socket.on("name", this.onChangeName.bind(this));
+    socket.on("profile", this.onProfileChange.bind(this));
     socket.on("vote", this.onVote.bind(this));
     socket.on("reveal", this.onReveal.bind(this));
     socket.on("reset", this.onReset.bind(this));
@@ -48,6 +50,7 @@ class Participant {
     this.room = new Room(generateId(4), options);
     ROOMS[this.room.id] = this.room;
     this.room.join(this);
+    this.room.notifyParticipants();
     callback(this.room.id);
   }
 
@@ -63,6 +66,8 @@ class Participant {
     try {
       this.room = getRoom(roomId);
       this.room.join(this);
+      this.room.notifyParticipants();
+
       console.log(`${this.socket.id} joined room`);
     } catch (error) {
       callback(false);
@@ -74,6 +79,7 @@ class Participant {
     console.log(`${this.socket.id} left room`);
     if (this.room) {
       this.room.leave(this);
+      this.room.notifyParticipants();
 
       if (this.room.participants.length === 0) {
         ROOMS[this.room.id] = null;
@@ -91,10 +97,24 @@ class Participant {
     }
   }
 
+  onProfileChange(profile) {
+    this.displayName = profile.displayName;
+    this.isSpectator = !!profile.isSpectator;
+
+    if (this.room) {
+      if (this.isSpectator) {
+        this.room.removeVoteForParticipant(this);
+      }
+
+      this.room.notifyParticipants();
+    }
+  }
+
   onChangeOptions(options) {
     console.log(`${this.socket.id} changed options`);
     if (this.room) {
       this.room.changeOptions(options);
+      this.room.notifyParticipants();
     }
   }
 
@@ -102,6 +122,7 @@ class Participant {
     console.log(`${this.socket.id} voted`);
     if (this.room) {
       this.room.vote(vote, this);
+      this.room.notifyParticipants();
     }
   }
 
@@ -109,6 +130,7 @@ class Participant {
     console.log(`${this.socket.id} revealed`);
     if (this.room) {
       this.room.reveal();
+      this.room.notifyParticipants();
     }
   }
 
@@ -116,6 +138,7 @@ class Participant {
     console.log(`${this.socket.id} reset`);
     if (this.room) {
       this.room.reset();
+      this.room.notifyParticipants();
     }
   }
 }

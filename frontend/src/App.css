@@ -109,3 +109,7 @@
 .options-dialog-actions {
   justify-content: flex-end;
 }
+
+.spectator-chip {
+  margin-left: 6px;
+}
