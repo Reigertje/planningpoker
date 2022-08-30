@@ -7,7 +7,7 @@
     "start": "node main.js",
     "build-frontend": "yarn --cwd frontend install && yarn --cwd frontend build",
     "deploy-frontend": "cp -a frontend/build/. public/",
-    "build": "yarn build-frontend && yarn deploy-frontend"
+    "build": "yarn build-frontend && yarn deploy-frontend && yarn install"
   },
   "engines": {
     "yarn": ">= 1.15.2"
