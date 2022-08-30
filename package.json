@@ -7,10 +7,10 @@
     "start": "node main.js",
     "build-frontend": "yarn --cwd frontend install && yarn --cwd frontend build",
     "deploy-frontend": "cp -a frontend/build/. public/",
-    "heroku-postbuild": "yarn build-frontend && yarn deploy-frontend"
+    "build": "yarn build-frontend && yarn deploy-frontend"
   },
   "engines": {
-    "yarn": "1.15.2"
+    "yarn": ">= 1.15.2"
   },
   "repository": {
     "type": "git",
