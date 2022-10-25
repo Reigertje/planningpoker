@@ -7,18 +7,20 @@ const Participant = require("./participant");
 
 const PORT = process.env.PORT || 8080;
 
+const PRODUCTION_MODE = process.env.NODE_ENV === "production";
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-if (process.env.NODE_ENV === "production") {
-  // Forward to https for Heroku
-  app.use((req, res, next) => {
-    if (req.header("x-forwarded-proto") !== "https")
-      res.redirect(`https://${req.header("host")}${req.url}`);
-    else next();
-  });
-}
+// TODO Fix https on prod
+// if (PRODUCTION_MODE) {
+//   app.use((req, res, next) => {
+//     if (req.header("x-forwarded-proto") !== "http")
+//       res.redirect(`http://${req.header("host")}${req.url}`);
+//     else next();
+//   });
+// }
 
 app.use(express.static("public"));
 
