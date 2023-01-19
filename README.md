@@ -1,40 +1,29 @@
-## Planning Poker
+# Planning Poker
 
-### Requirements
+## Installation
 
-Make sure you have node.js, npm and yarn installed.
+### Docker
 
-### Server
+1. Build docker image: `DOCKER_BUILDKIT=1 docker build . -t chriszo111/planningpawker:latest`
+2. Run docker container: `docker run -d -it --rm -p 9000:8080/tcp chriszo111/planningpawker:latest`
 
-For setup, simply run
+You can now access the app by visiting `http://localhost:8080` in your browser.
 
-```
-npm install
-```
+### Node.js
 
-Run server with node
+#### Requirements
 
-```
-node main.js
-```
+- Make sure you have `node.js`, `npm` and `yarn` installed.
 
-### Frontend
+#### Server
 
-```
-cd frontend
-```
+1. Run `npm install` in the root folder
+2. Run server with `node main.js`
 
-Install packages
+#### Frontend
 
-```
-yarn install
-```
+1. Navigate to frontend directory `cd ./frontend`
+2. Install packages `yarn install`
+3. Start development server `yarn start`
 
-Start development server
-
-```
-yarn start
-```
-
-
-You can now access the app by visiting localhost:3000 in your browser. 
+You can now access the app by visiting `http://localhost:3000` in your browser. 
