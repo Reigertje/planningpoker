@@ -105,3 +105,4 @@ dist
 
 # Local build files
 build/
+public/
