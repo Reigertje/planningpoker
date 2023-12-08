@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
   BrowserRouter,
   Routes,
@@ -10,6 +9,7 @@ import { socket } from './socket';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from "@mui/material/Switch";
+import { IOSSwitch } from "utils/Switches";
 import Home from "./home/Home";
 import Room from "./room/Room";
 import Snowflakes from "seasonal/snowflakes/snowflakes";
@@ -58,7 +58,10 @@ const App = () => {
               <Snowflakes showSnowflakes={showSnowflakes} />
               <Grid xs={12} key="grid-top-bar-navigation" display="flex" justifyContent="right">
               <FormGroup>
-                <FormControlLabel control={<Switch checked={showSnowflakes} onChange={() => setShowSnowflakes(!showSnowflakes)} />} label={<SvgIcon component={AcUnitIcon} />} />
+                <FormControlLabel
+                  control={<IOSSwitch sx={{ m: 1 }} checked={showSnowflakes} onChange={() => setShowSnowflakes(!showSnowflakes)} />}
+                  label="❄️"
+                />
               </FormGroup>
               </Grid>
               <Grid
