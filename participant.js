@@ -77,6 +77,7 @@ class Participant {
 
   onDisconnect() {
     console.log(`${this.socket.id} left room`);
+
     if (this.room) {
       this.room.leave(this);
       this.room.notifyParticipants();
@@ -89,8 +90,11 @@ class Participant {
   }
 
   onChangeName(name) {
-    console.log(`${this.socket.id} changed name`);
+    if (this.displayName === name) return;
+
     this.displayName = name;
+
+    console.log(`${this.socket.id} changed name`);
 
     if (this.room) {
       this.room.notifyParticipants();
