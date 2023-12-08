@@ -13,15 +13,6 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-// TODO Fix https on prod
-// if (PRODUCTION_MODE) {
-//   app.use((req, res, next) => {
-//     if (req.header("x-forwarded-proto") !== "http")
-//       res.redirect(`http://${req.header("host")}${req.url}`);
-//     else next();
-//   });
-// }
-
 app.use(express.static("public"));
 
 app.get("*", (req, res) => {
@@ -29,7 +20,7 @@ app.get("*", (req, res) => {
 });
 
 // console.log that your server is up and running
-server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+server.listen(PORT, () => console.log(`Listening on port ${PORT} in ${PRODUCTION_MODE ? "production" : "debug"} mode`));
 
 io.on("connection", socket => {
   socket.emit("connected");

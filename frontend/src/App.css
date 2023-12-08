@@ -1,12 +1,3 @@
-.planning-poker-home {
-  text-align: center;
-  margin: 32px;
-}
-
-.planning-poker-logo {
-  height: 100px;
-}
-
 .participants-row {
   display: flex;
   flex-direction: row;

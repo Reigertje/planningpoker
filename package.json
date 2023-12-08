@@ -1,7 +1,7 @@
 {
   "name": "planningpoker",
-  "version": "1.0.0",
-  "description": "poker to plan",
+  "version": "1.0.1",
+  "description": "Poker to plan",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
@@ -10,7 +10,7 @@
     "build": "yarn build-frontend && yarn deploy-frontend && yarn install"
   },
   "engines": {
-    "yarn": ">= 1.15.2"
+    "yarn": ">= 1.22.0"
   },
   "repository": {
     "type": "git",
@@ -19,16 +19,20 @@
   "keywords": [
     "reireirei",
     "rei",
-    "reirei"
+    "reirei",
+    "planning",
+    "poker",
+    "planning",
+    "pawker"
   ],
-  "author": "brian reigersberg",
+  "author": "Brian Reigersberg",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Reigertje/planningpoker/issues"
   },
   "homepage": "https://github.com/Reigertje/planningpoker#readme",
   "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.0.0"
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
   }
 }

@@ -1,25 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Container from "@material-ui/core/Container";
-import socketIOClient from "socket.io-client";
-
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Grid from '@mui/material/Unstable_Grid2';
+import { socket } from './socket';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from "@mui/material/Switch";
+import { IOSSwitch } from "utils/Switches";
 import Home from "./home/Home";
 import Room from "./room/Room";
+import Snowflakes from "seasonal/snowflakes/snowflakes";
 import { useSnackbar } from "notistack";
-
+import AcUnitIcon from '@mui/icons-material/AcUnit';
 import "./App.css";
+import { SvgIcon } from "@mui/material";
 
-const AppContext = React.createContext();
+export const AppContext = React.createContext();
 
-export default function App() {
+const App = () => {
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const [client, setClient] = useState(null);
+  const [showSnowflakes, setShowSnowflakes] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    const client = socketIOClient();
-    client.on("connected", () => {
-      setClient(client);
-    });
+    const onConnect = () => { setIsConnected(true); setClient(socket); }
+    const onDisconnect = () => { setIsConnected(false); }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
   }, []);
 
   const dispatchError = message => {
@@ -34,23 +51,35 @@ export default function App() {
   };
 
   return (
-    <Router>
+    <BrowserRouter>
       <AppContext.Provider value={{ client, dispatchError }}>
         {client && (
-          <Container maxWidth="lg" className="app-container">
-            <Switch>
-              <Route path="/:roomId">
-                <Room />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </Container>
+            <Grid container spacing={2}>
+              <Snowflakes showSnowflakes={showSnowflakes} />
+              <Grid xs={12} key="grid-top-bar-navigation" display="flex" justifyContent="right">
+              <FormGroup>
+                <FormControlLabel
+                  control={<IOSSwitch sx={{ m: 1 }} checked={showSnowflakes} onChange={() => setShowSnowflakes(!showSnowflakes)} />}
+                  label="❄️"
+                />
+              </FormGroup>
+              </Grid>
+              <Grid
+                key="grid-routes"
+                xs={12}
+                display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <Routes>
+                  <Route path="/:roomId" element={<Room />} />
+                  <Route path="/" element={<Home />} />
+                </Routes>
+              </Grid>
+            </Grid>
         )}
       </AppContext.Provider>
-    </Router>
+    </BrowserRouter>
   );
 }
 
-export { AppContext };
+export default App;

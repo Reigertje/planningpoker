@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { SnackbarProvider } from "notistack";
-import Grow from "@material-ui/core/Grow";
+import Grow from "@mui/material/Grow";
 
 ReactDOM.render(
   <React.StrictMode>
