@@ -90,7 +90,7 @@ const Room = () => {
     if (cookies[NAME_COOKIE_KEY]) {
       name(cookies[NAME_COOKIE_KEY]);
     }
-  }, [cookies, name]);
+  }, [cookies[NAME_COOKIE_KEY]]);
 
   const vote = (value) => {
     client.emit("vote", value);
