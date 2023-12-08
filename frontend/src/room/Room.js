@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import IconButton from "@material-ui/core/IconButton";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import ReplayIcon from "@material-ui/icons/Replay";
-import EditIcon from "@material-ui/icons/Edit";
-import Chip from "@material-ui/core/Chip";
-import Button from "@material-ui/core/Button";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ReplayIcon from "@mui/icons-material/Replay";
+import EditIcon from "@mui/icons-material/Edit";
+import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
+import SvgIcon from "@mui/material/SvgIcon";
 import { ReactComponent as CardsIconSvg } from "assets/cards.svg";
 import { ReactComponent as CatIconSvg } from "assets/cat_icon.svg";
 import { AppContext } from "App";
@@ -47,7 +47,7 @@ const CatIcon = ({ className }) => (
 const useRoom = (roomId) => {
   const { client, dispatchError } = useContext(AppContext);
   const [roomState, setRoomState] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     client.on("roomState", (data) => {
@@ -56,7 +56,7 @@ const useRoom = (roomId) => {
 
     client.emit("join", roomId, (success) => {
       if (!success) {
-        history.replace("/");
+        navigate("/");
         dispatchError("Room does not exist");
       }
     });
@@ -65,7 +65,7 @@ const useRoom = (roomId) => {
       client.emit("leave");
       client.off("roomState");
     };
-  }, [roomId, client, dispatchError, history]);
+  }, [roomId, client, dispatchError, navigate]);
 
   return roomState;
 };
@@ -81,11 +81,16 @@ const Room = () => {
   );
   const [showOptionsDialog, setShowOptionsDialog] = useState(false);
 
+  const name = (displayName) => {
+    setCookie(NAME_COOKIE_KEY, displayName, { path: "/" });
+    client.emit("name", displayName);
+  };
+
   useEffect(() => {
     if (cookies[NAME_COOKIE_KEY]) {
       name(cookies[NAME_COOKIE_KEY]);
     }
-  }, []);
+  }, [cookies, name]);
 
   const vote = (value) => {
     client.emit("vote", value);
@@ -97,11 +102,6 @@ const Room = () => {
 
   const reveal = () => {
     client.emit("reveal");
-  };
-
-  const name = (displayName) => {
-    setCookie(NAME_COOKIE_KEY, displayName, { path: "/" });
-    client.emit("name", displayName);
   };
 
   const profile = (displayName, isSpectator) => {

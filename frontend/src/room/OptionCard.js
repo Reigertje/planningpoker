@@ -1,9 +1,9 @@
 import React from "react";
 
 import classnames from "classnames";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import Typography from "@material-ui/core/Typography";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import Typography from "@mui/material/Typography";
 
 import { ReactComponent as FrontSvg } from "assets/front.svg";
 

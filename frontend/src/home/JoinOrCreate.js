@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 import { AppContext } from "App";
 
@@ -15,18 +15,18 @@ const JOIN = "JOIN";
 const CREATE = "CREATE";
 
 const JoinOrCreate = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [roomId, setRoomId] = useState("");
   const [selectedTab, setSelectedTab] = useState(JOIN);
   const { client } = useContext(AppContext);
 
   const onJoin = roomId => {
-    history.push(`/${roomId}`);
+    navigate(`/${roomId}`);
   };
 
   const onCreate = () => {
     client.emit("create", DEFAULT_OPTIONS, roomId => {
-      history.push(`/${roomId}`);
+      navigate(`/${roomId}`);
     });
   };
 

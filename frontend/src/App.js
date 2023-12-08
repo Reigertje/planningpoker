@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Container from "@material-ui/core/Container";
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import Container from "@mui/material/Container";
+import Grid from '@mui/material/Unstable_Grid2';
+import { styled } from '@mui/material/styles';
 import socketIOClient from "socket.io-client";
+import SwitchButton from "@mui/material/Switch";
 
 import Home from "./home/Home";
 import Room from "./room/Room";
+import Snowflakes from "seasonal/snowflakes/snowflakes";
 import { useSnackbar } from "notistack";
 
 import "./App.css";
 
-const AppContext = React.createContext();
+export const AppContext = React.createContext();
 
-export default function App() {
+const App = () => {
   const [client, setClient] = useState(null);
+  const [showSnowflakes, setShowSnowflakes] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -33,24 +43,30 @@ export default function App() {
     });
   };
 
+  const switchButtonLabel = { inputProps: { 'aria-label': 'Xmas mode' } };
+
   return (
-    <Router>
+    <BrowserRouter>
       <AppContext.Provider value={{ client, dispatchError }}>
         {client && (
           <Container maxWidth="lg" className="app-container">
-            <Switch>
-              <Route path="/:roomId">
-                <Room />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
+            <Snowflakes showSnowflakes={showSnowflakes} />
+            <Grid container spacing={2}>
+              <Grid xs={12}>
+                <SwitchButton {...switchButtonLabel} showSnowflakes color="default" />
+              </Grid>
+              <Grid>
+                <Routes>
+                  <Route path="/:roomId" element={<Room />} />
+                  <Route path="/" element={<Home />} />
+                </Routes>
+              </Grid>
+            </Grid>
           </Container>
         )}
       </AppContext.Provider>
-    </Router>
+    </BrowserRouter>
   );
 }
 
-export { AppContext };
+export default App;
