@@ -41,7 +41,7 @@ class Participant {
   }
 
   onCreateRoom(options, callback) {
-    console.log(`${this.socket.id} created room`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} created room`);
 
     if (this.room != null) {
       this.onDisconnect();
@@ -55,7 +55,7 @@ class Participant {
   }
 
   onJoinRoom(roomId, callback) {
-    console.log(`${this.socket.id} is joining room`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} is joining room`);
     if (this.room != null) {
       if (this.room.id === roomId) {
         this.room.notifyParticipants();
@@ -68,7 +68,7 @@ class Participant {
       this.room.join(this);
       this.room.notifyParticipants();
 
-      console.log(`${this.socket.id} joined room`);
+      console.log(`${new Date().toISOString()} ${this.socket.id} joined room`);
     } catch (error) {
       callback(false);
       console.error(error);
@@ -76,7 +76,7 @@ class Participant {
   }
 
   onDisconnect() {
-    console.log(`${this.socket.id} left room`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} left room`);
 
     if (this.room) {
       this.room.leave(this);
@@ -94,7 +94,7 @@ class Participant {
 
     this.displayName = name;
 
-    console.log(`${this.socket.id} changed name`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} changed name`);
 
     if (this.room) {
       this.room.notifyParticipants();
@@ -115,7 +115,7 @@ class Participant {
   }
 
   onChangeOptions(options) {
-    console.log(`${this.socket.id} changed options`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} changed options`);
     if (this.room) {
       this.room.changeOptions(options);
       this.room.notifyParticipants();
@@ -123,7 +123,7 @@ class Participant {
   }
 
   onVote(vote) {
-    console.log(`${this.socket.id} voted`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} voted`);
     if (this.room) {
       this.room.vote(vote, this);
       this.room.notifyParticipants();
@@ -131,7 +131,7 @@ class Participant {
   }
 
   onReveal() {
-    console.log(`${this.socket.id} revealed`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} revealed`);
     if (this.room) {
       this.room.reveal();
       this.room.notifyParticipants();
@@ -139,7 +139,7 @@ class Participant {
   }
 
   onReset() {
-    console.log(`${this.socket.id} reset`);
+    console.log(`${new Date().toISOString()} ${this.socket.id} reset`);
     if (this.room) {
       this.room.reset();
       this.room.notifyParticipants();
