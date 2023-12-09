@@ -23,6 +23,7 @@ const RoomActionButton = ({ children, IconComponent, onClick }) => {
   return (
     <Button
       variant="outlined"
+      color="secondary"
       className="room-action-button"
       onClick={onClick}
       startIcon={

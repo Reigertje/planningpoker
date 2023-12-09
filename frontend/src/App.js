@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
-import Grid from '@mui/material/Unstable_Grid2';
+import { BrowserRouter } from "react-router-dom";
 import { socket } from './socket';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from "@mui/material/Switch";
-import { IOSSwitch } from "utils/Switches";
-import Home from "./home/Home";
-import Room from "./room/Room";
-import Snowflakes from "seasonal/snowflakes/snowflakes";
 import { useSnackbar } from "notistack";
-import AcUnitIcon from '@mui/icons-material/AcUnit';
+import Root from "./Root";
 import "./App.css";
-import { SvgIcon } from "@mui/material";
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0d47a1',
+      light: '#3d6bb3',
+      dark: '#093170'
+    },
+    secondary: {
+      main: '#000000',
+      light: '#333333',
+      dark: '#000000'
+    },
+    snow: {
+      main: '#124116',
+      light: '#006064',
+      dark: '#801313'
+    },
+  }
+});
 
 export const AppContext = React.createContext();
 
@@ -53,30 +61,12 @@ const App = () => {
   return (
     <BrowserRouter>
       <AppContext.Provider value={{ client, dispatchError }}>
-        {client && (
-            <Grid container spacing={2}>
-              <Snowflakes showSnowflakes={showSnowflakes} />
-              <Grid xs={12} key="grid-top-bar-navigation" display="flex" justifyContent="right">
-              <FormGroup>
-                <FormControlLabel
-                  control={<IOSSwitch sx={{ m: 1 }} checked={showSnowflakes} onChange={() => setShowSnowflakes(!showSnowflakes)} />}
-                  label="❄️"
-                />
-              </FormGroup>
-              </Grid>
-              <Grid
-                key="grid-routes"
-                xs={12}
-                display="flex"
-                justifyContent="center"
-                alignItems="center">
-                <Routes>
-                  <Route path="/:roomId" element={<Room />} />
-                  <Route path="/" element={<Home />} />
-                </Routes>
-              </Grid>
-            </Grid>
-        )}
+        <ThemeProvider theme={theme}>
+          <Root
+            showSnowflakes={showSnowflakes}
+            setShowSnowflakes={setShowSnowflakes}
+            client={client} />
+        </ThemeProvider>
       </AppContext.Provider>
     </BrowserRouter>
   );
