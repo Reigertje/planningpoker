@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { IOSSwitch } from "utils/Switches";
@@ -8,7 +8,9 @@ import Snowflakes from "seasonal/snowflakes/snowflakes";
 import Grid from '@mui/material/Unstable_Grid2';
 import { Routes, Route } from "react-router-dom";
 
-const Root = ({ client, setShowSnowflakes, showSnowflakes }) => {
+const Root = ({ client }) => {
+  const [showSnowflakes, setShowSnowflakes] = useState(true);
+
   if (!client) {
     return <></>;
   }

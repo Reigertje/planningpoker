@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useReducer } from "react";
+import roomReducer, { initialState } from "./reducer";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import IconButton from "@mui/material/IconButton";
@@ -18,6 +19,7 @@ import OptionCard from "./OptionCard";
 import { OPTION_DECKS } from "options";
 
 const NAME_COOKIE_KEY = "name";
+const ROOM_COOKIE_KEY = "room";
 
 const RoomActionButton = ({ children, IconComponent, onClick }) => {
   return (
@@ -49,6 +51,15 @@ const useRoom = (roomId) => {
   const { client, dispatchError } = useContext(AppContext);
   const [roomState, setRoomState] = useState(null);
   const navigate = useNavigate();
+  const [store] = useReducer(roomReducer, initialState);
+
+  console.log(store);
+
+  roomReducer(store, { type: "JOIN_ROOM", payload: { roomId, client } });
+
+  if (!store.joined) {
+    dispatchError("Could not join room");
+  }
 
   useEffect(() => {
     client.on("roomState", (data) => {
@@ -66,7 +77,7 @@ const useRoom = (roomId) => {
       client.emit("leave");
       client.off("roomState");
     };
-  }, [roomId, client, dispatchError, navigate]);
+  }, [roomId, client, dispatchError, navigate, roomState]);
 
   return roomState;
 };
@@ -75,12 +86,14 @@ const Room = () => {
   const { client } = useContext(AppContext);
   const { roomId } = useParams();
   const roomState = useRoom(roomId);
-  const [cookies, setCookie] = useCookies([NAME_COOKIE_KEY]);
+  const [cookies, setCookie] = useCookies([NAME_COOKIE_KEY, ROOM_COOKIE_KEY]);
 
   const [showProfileDialog, setShowProfileDialog] = useState(
     !cookies[NAME_COOKIE_KEY]
   );
   const [showOptionsDialog, setShowOptionsDialog] = useState(false);
+
+
 
   const name = (displayName) => {
     setCookie(NAME_COOKIE_KEY, displayName, { path: "/" });
