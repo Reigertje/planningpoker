@@ -31,7 +31,6 @@ export const AppContext = React.createContext();
 const App = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [client, setClient] = useState(null);
-  const [showSnowflakes, setShowSnowflakes] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -62,10 +61,7 @@ const App = () => {
     <BrowserRouter>
       <AppContext.Provider value={{ client, dispatchError }}>
         <ThemeProvider theme={theme}>
-          <Root
-            showSnowflakes={showSnowflakes}
-            setShowSnowflakes={setShowSnowflakes}
-            client={client} />
+          <Root client={client} />
         </ThemeProvider>
       </AppContext.Provider>
     </BrowserRouter>
