@@ -4,7 +4,8 @@
 
 ### Docker
 
-1. Build docker image: `DOCKER_BUILDKIT=1 docker build . -t chriszo111/planningpawker:latest`
+1. Build docker image: `docker build . -t chriszo111/planningpawker:latest`
+  a. For`linux/amd64`: `docker buildx build --platform linux/amd64 . -t chriszo111/planningpawker:latest_amd64`
 2. Run docker container: `docker run -d -it --rm -p 9000:8080/tcp chriszo111/planningpawker:latest`
 
 You can now access the app by visiting `http://localhost:8080` in your browser.
@@ -26,4 +27,4 @@ You can now access the app by visiting `http://localhost:8080` in your browser.
 2. Install packages `yarn install`
 3. Start development server `yarn start`
 
-You can now access the app by visiting `http://localhost:3000` in your browser. 
+You can now access the app by visiting `http://localhost:3000` in your browser.
