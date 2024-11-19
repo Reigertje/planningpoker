@@ -27,5 +27,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/Reigertje/planningpoker:main
+          tags: ghcr.io/reigertje/planningpoker:main
 
